@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import { useFonts, Inter_400Regular } from '@expo-google-fonts/inter';
 import { HankenGrotesk_700Bold, HankenGrotesk_600SemiBold } from '@expo-google-fonts/hanken-grotesk';
 
-import LoginScreen from "./LoginScreen";
+import LoginScreen from "../LoginScreen";
 
 export default function Home() {
 

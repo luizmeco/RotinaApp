@@ -2,10 +2,10 @@ import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
-import Background from "./Background";
-import GlassCard from "./GlassCard";
-import GlassInput from "./GlassInput";
-import PrimaryButton from "./PrimaryButton";
+import Background from "../Background";
+import GlassCard from "../GlassCard";
+import GlassInput from "../GlassInput";
+import PrimaryButton from "../PrimaryButton";
 
 export default function RegisterScreen() {
   const router = useRouter();
