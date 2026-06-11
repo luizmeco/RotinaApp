@@ -6,19 +6,38 @@ import Background from "../components/Background";
 import GlassCard from "../components/GlassCard";
 import GlassInput from "../components/GlassInput";
 import PrimaryButton from "../components/PrimaryButton";
+import { useRegister } from "../hooks/RegisterHook";
 
 export default function RegisterScreen() {
   const router = useRouter();
+
+  const {
+    name,
+    setName,
+    email,
+    setEmail,
+    password,
+    setPassword,
+    confirmPassword,
+    setConfirmPassword,
+    loading,
+    errorMessage,
+    handleRegister,
+  } = useRegister();
 
   return (
     <Background>
       <GlassCard>
         {/* Cabeçalho / Logo */}
         <View className="items-center mb-8">
-          <View className="w-16 h-16 bg-white/10 rounded-2xl items-center justify-center mb-4 border border-white/20">
-            <Feather name="user-plus" size={32} color="#a3c9ff" />
+          <View className="w-16 h-16 bg-glass-white rounded-2xl items-center justify-center mb-4 border border-glass-border">
+            <Feather
+              name="user-plus"
+              size={32}
+              className="text-primary-light"
+            />
           </View>
-          <Text className="text-on-surface font-display text-2xl">
+          <Text className="text-on-surface font-bold text-2xl">
             Crie sua conta
           </Text>
           <Text className="text-on-surface-variant font-light text-sm text-center mt-2">
@@ -34,6 +53,8 @@ export default function RegisterScreen() {
               iconName="user"
               placeholder="Digite seu nome"
               autoCapitalize="words"
+              value={name}
+              onChangeText={setName}
             />
           </View>
 
@@ -43,6 +64,8 @@ export default function RegisterScreen() {
             placeholder="Digite seu e-mail"
             keyboardType="email-address"
             autoCapitalize="none"
+            value={email}
+            onChangeText={setEmail}
           />
 
           <View className="mt-4">
@@ -51,6 +74,8 @@ export default function RegisterScreen() {
               iconName="lock"
               placeholder="••••••••"
               isPassword
+              value={password}
+              onChangeText={setPassword}
             />
           </View>
 
@@ -60,12 +85,26 @@ export default function RegisterScreen() {
               iconName="lock"
               placeholder="••••••••"
               isPassword
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
             />
           </View>
         </View>
 
+        {/* Mensagem de Erro */}
+        {errorMessage ? (
+          <Text className="text-error text-sm text-center mb-4 font-semibold">
+            {errorMessage}
+          </Text>
+        ) : null}
+
         {/* Botão de Ação */}
-        <PrimaryButton title="Cadastrar" iconName="check" />
+        <PrimaryButton
+          title={loading ? "Cadastrando" : "Cadastrar"}
+          iconName="check"
+          disabled={loading}
+          onPress={handleRegister}
+        />
 
         {/* Link para Login */}
         <View className="flex-row justify-center items-center mt-6">
@@ -73,7 +112,7 @@ export default function RegisterScreen() {
             Já tem uma conta?{" "}
           </Text>
           <TouchableOpacity onPress={() => router.push("/login")}>
-            <Text className="text-primary font-light text-sm font-bold">
+            <Text className="text-primary-container font-bold text-sm">
               Faça login
             </Text>
           </TouchableOpacity>

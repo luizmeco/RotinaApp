@@ -29,18 +29,17 @@ export default function GlassInput({
         {label}
       </Text>
       <View
-        className={`flex-row items-center bg-white/5 border rounded-xl px-4 h-14 transition-colors ${
-          isFocused ? "border-primary bg-white/10" : "border-white/10"
+        className={`flex-row items-center bg-glass-white border rounded-xl px-4 h-14 transition-colors ${
+          isFocused ? "border-primary" : "border-glass-border"
         }`}
       >
         <Feather
           name={iconName}
           size={20}
-          color={isFocused ? "#a3c9ff" : "#8a919e"}
+          className={isFocused ? "text-primary-light" : "text-outline"}
         />
         <TextInput
-          className="flex-1 text-on-surface font-light ml-3 text-base"
-          placeholderTextColor="#8a919e"
+          className="flex-1 text-on-surface font-light ml-3 text-base placeholder:text-outline"
           secureTextEntry={isPassword && !showPassword}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
@@ -54,7 +53,7 @@ export default function GlassInput({
             <Feather
               name={showPassword ? "eye" : "eye-off"}
               size={20}
-              color="#8a919e"
+              className="text-outline"
             />
           </TouchableOpacity>
         )}

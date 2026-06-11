@@ -1,10 +1,11 @@
+import AntDesign from "@expo/vector-icons/AntDesign";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import React from "react";
 import { Text, TouchableOpacity, TouchableOpacityProps } from "react-native";
 
 interface PrimaryButtonProps extends TouchableOpacityProps {
   title: string;
-  iconName?: keyof typeof Feather.glyphMap;
+  iconName?: React.ComponentProps<typeof SimpleLineIcons>["name"];
 }
 
 export default function PrimaryButton({
@@ -14,14 +15,24 @@ export default function PrimaryButton({
 }: PrimaryButtonProps) {
   return (
     <TouchableOpacity
-      className="bg-primary-container h-14 rounded-xl flex-row items-center justify-center gap-2"
+      className="bg-primary-container border border-glass-border h-14 rounded-xl flex-row items-center justify-center gap-2"
       activeOpacity={0.8}
       {...props}
     >
-      <Text className="text-on-primary font-light text-base font-bold">
-        {title}
-      </Text>
-      {iconName && <SimpleLineIcons name={iconName} size={20} color="white" />}
+      <Text className="text-on-primary text-base font-bold">{title}</Text>
+      {props.disabled ? (
+        <AntDesign
+          name="loading-3-quarters"
+          size={21}
+          className="text-on-primary animate-spin"
+        />
+      ) : (
+        <SimpleLineIcons
+          name={iconName ?? "arrow-right"}
+          size={20}
+          className="text-on-primary"
+        />
+      )}
     </TouchableOpacity>
   );
 }
