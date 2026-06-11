@@ -24,7 +24,8 @@ module.exports = {
         // Cores primárias (Azul)
         primary: "#0078d4", // Ajustado para o Primary Blue do texto
         "on-primary": "#ffffff",
-        "primary-container": "#0078d4",
+        "on-secondary": "#c0c7d4",
+        "primary-container": "#0091ff96",
         "primary-light": "#a3c9ff",
 
         // Cores de sotaque (Liquid Cyan / Vidro)

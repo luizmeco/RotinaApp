@@ -8,8 +8,13 @@ interface GlassCardProps {
 
 export default function GlassCard({ children }: GlassCardProps) {
   return (
-    <View className="rounded-[24px] overflow-hidden border border-white/10 shadow-lg">
-      <BlurView intensity={40} tint="dark" className="p-8">
+    <View className="rounded-[24px] overflow-hidden border border-glass-border shadow-lg">
+      <BlurView
+        intensity={40}
+        tint="dark"
+        experimentalBlurMethod="dimezisBlurView"
+        className="p-8"
+      >
         {children}
       </BlurView>
     </View>

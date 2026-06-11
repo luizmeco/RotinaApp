@@ -1,16 +1,27 @@
 import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import Background from "../components/Background";
 import GlassCard from "../components/GlassCard";
 import GlassInput from "../components/GlassInput";
 import PrimaryButton from "../components/PrimaryButton";
+import { useLogin } from "../hooks/LoginHook";
 
 export default function LoginScreen() {
-  // Estados para controlar o formulário e a interface
-  const [rememberMe, setRememberMe] = useState(false);
   const router = useRouter();
+
+  const {
+    email,
+    setEmail,
+    password,
+    setPassword,
+    rememberMe,
+    setRememberMe,
+    loading,
+    errorMessage,
+    handleLogin,
+  } = useLogin();
 
   return (
     <Background>
@@ -19,10 +30,10 @@ export default function LoginScreen() {
         {/* Cabeçalho / Logo */}
         <View className="items-center mb-8">
           {/* Logo Placeholder (Você pode trocar por um <Image /> depois) */}
-          <View className="w-16 h-16 bg-white/10 rounded-2xl items-center justify-center mb-4 border border-white/20">
-            <Feather name="map-pin" size={32} color="#a3c9ff" />
+          <View className="w-16 h-16 bg-glass-white rounded-2xl items-center justify-center mb-4 border border-glass-border">
+            <Feather name="map-pin" size={32} className="text-primary-light" />
           </View>
-          <Text className="text-on-surface font-light text-2xl">
+          <Text className="text-on-surface font-bold text-2xl">
             Bem-vindo de volta
           </Text>
           <Text className="text-on-surface-variant font-light text-sm text-center mt-2">
@@ -39,6 +50,8 @@ export default function LoginScreen() {
             placeholder="Digite seu e-mail"
             keyboardType="email-address"
             autoCapitalize="none"
+            value={email}
+            onChangeText={setEmail}
           />
 
           {/* Input: Senha */}
@@ -48,9 +61,18 @@ export default function LoginScreen() {
               iconName="lock"
               placeholder="••••••••"
               isPassword
+              value={password}
+              onChangeText={setPassword}
             />
           </View>
         </View>
+
+        {/* Mensagem de Erro */}
+        {errorMessage ? (
+          <Text className="text-error text-sm text-center mb-4 font-semibold">
+            {errorMessage}
+          </Text>
+        ) : null}
 
         {/* Opções extras */}
         <View className="flex-row items-center justify-between mb-8">
@@ -60,7 +82,7 @@ export default function LoginScreen() {
             activeOpacity={0.7}
           >
             <View
-              className={`w-5 h-5 rounded border items-center justify-center ${rememberMe ? "bg-primary border-primary" : "border-white/20 bg-white/5"}`}
+              className={`w-5 h-5 rounded border items-center justify-center ${rememberMe ? "bg-primary border-primary" : "border-glass-border bg-glass-white"}`}
             >
               {rememberMe && <Feather name="check" size={14} color="white" />}
             </View>
@@ -70,22 +92,27 @@ export default function LoginScreen() {
           </TouchableOpacity>
 
           <TouchableOpacity>
-            <Text className="text-primary font-light text-sm font-semibold">
+            <Text className="text-primary font-semibold text-sm">
               Esqueceu a senha?
             </Text>
           </TouchableOpacity>
         </View>
 
         {/* Botão de Ação */}
-        <PrimaryButton title="Entrar" iconName="arrow-right" />
+        <PrimaryButton
+          title={loading ? "Entrando..." : "Entrar"}
+          iconName="arrow-right"
+          disabled={loading}
+          onPress={handleLogin}
+        />
 
         {/* Link para Cadastro */}
         <View className="flex-row justify-center items-center mt-6">
-          <Text className="text-on-surface-variant font-light text-sm">
+          <Text className="text-on-secondary font-light text-sm">
             Não tem uma conta?{" "}
           </Text>
           <TouchableOpacity onPress={() => router.push("/register")}>
-            <Text className="text-primary font-light text-sm font-bold">
+            <Text className="text-primary-container font-bold text-sm">
               Cadastre-se
             </Text>
           </TouchableOpacity>
