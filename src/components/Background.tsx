@@ -22,10 +22,16 @@ export default function Background({ children }: BackgroundProps) {
       <StatusBar style="light" />
 
       {/* Blobs de Fundo (Efeito Liquid Glass) fixos na tela inteira */}
-      <View className="blob absolute top-[-15%] left-[-25%] w-[60vw] h-[60vw] bg-primary rounded-full opacity-25" />
-      <View className="blob absolute bottom-[25%] right-[-25%] w-[40vw] h-[40vw] bg-accent rounded-full opacity-10" />
-      <View className="blob absolute bottom-[5%] left-[5%] w-[30vw] h-[30vw] bg-primary rounded-full opacity-30" />
+      <View className="blob absolute top-[-15%] left-[-25%] w-[60vw] h-[60vw] bg-primary rounded-full opacity-100" />
+      <View className="blob absolute bottom-[25%] right-[-25%] w-[40vw] h-[40vw] bg-accent rounded-full opacity-50" />
+      <View className="blob absolute bottom-[5%] left-[5%] w-[30vw] h-[30vw] bg-primary rounded-full opacity-50" />
 
+      <BlurView
+        intensity={100} // Equivale a força do blur (de 1 a 100)
+        tint="dark" // Cor do blur
+        experimentalBlurMethod="dimezisBlurView" // Força a renderização do Blur no Android
+        style={StyleSheet.absoluteFill} // Faz o blur preencher todo o View pai
+      />
       <BlurView
         intensity={100} // Equivale a força do blur (de 1 a 100)
         tint="dark" // Cor do blur

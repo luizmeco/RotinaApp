@@ -102,6 +102,8 @@ export default function LoginScreen() {
         <PrimaryButton
           title={loading ? "Entrando..." : "Entrar"}
           iconName="arrow-right"
+          colorClass="bg-primary/70"
+          textColorClass="text-on-primary" 
           disabled={loading}
           onPress={handleLogin}
         />

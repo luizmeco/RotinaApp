@@ -12,8 +12,8 @@ export default function TabsLayout() {
         tabBarStyle: {
           position: "absolute",
           bottom: 24,
-          left: 24,
-          right: 24,
+          left: 50,
+          right: 50,
           height: 64,
           borderRadius: 24,
           backgroundColor: "rgba(255, 255, 255, 0.08)", // glass-white
@@ -25,7 +25,7 @@ export default function TabsLayout() {
         },
         tabBarBackground: () => (
           <BlurView
-            intensity={40}
+            intensity={50}
             tint="dark"
             experimentalBlurMethod="dimezisBlurView"
             style={{
@@ -58,6 +58,15 @@ export default function TabsLayout() {
           title: "Mapa",
           tabBarIcon: ({ color }) => (
             <SimpleLineIcons name="map" size={20} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: "Profile",
+          tabBarIcon: ({ color }) => (
+            <SimpleLineIcons name="user" size={20} color={color} />
           ),
         }}
       />

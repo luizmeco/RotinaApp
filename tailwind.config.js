@@ -34,7 +34,7 @@ module.exports = {
         "glass-border": "rgba(255, 255, 255, 0.1)",
 
         // Erro
-        error: "#ffb4ab",
+        error: "#ff7869",
         "on-error": "#690005",
       },
       fontFamily: {
