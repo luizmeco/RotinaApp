@@ -4,7 +4,7 @@ module.exports = {
   content: [
     "./app/**/*.{js,jsx,ts,tsx}",
     "./App.{js,jsx,ts,tsx}",
-    "./components/**/*.{js,jsx,ts,tsx}",
+    "./src/**/**/*.{js,jsx,ts,tsx}",
   ],
   presets: [require("nativewind/preset")],
   theme: {
@@ -37,9 +37,10 @@ module.exports = {
         "on-error": "#690005",
       },
       fontFamily: {
-        display: ["HankenGrotesk", "sans-serif"], // Nomes que usaremos no Expo Fonts
-        body: ["Inter", "sans-serif"],
-        mono: ["Geist", "monospace"],
+        light: ["HankenGrotesk_300Light"],
+        regular: ["HankenGrotesk_400Regular"],
+        semibold: ["HankenGrotesk_600SemiBold"],
+        bold: ["HankenGrotesk_700Bold"],
       },
       borderRadius: {
         sm: "4px",

@@ -1,4 +1,4 @@
-import { Feather } from "@expo/vector-icons";
+import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import React from "react";
 import { Text, TouchableOpacity, TouchableOpacityProps } from "react-native";
 
@@ -18,10 +18,10 @@ export default function PrimaryButton({
       activeOpacity={0.8}
       {...props}
     >
-      <Text className="text-on-primary-container font-['Inter'] text-base font-bold">
+      <Text className="text-on-primary font-light text-base font-bold">
         {title}
       </Text>
-      {iconName && <Feather name={iconName} size={20} color="white" />}
+      {iconName && <SimpleLineIcons name={iconName} size={20} color="white" />}
     </TouchableOpacity>
   );
 }
