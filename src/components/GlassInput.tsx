@@ -25,7 +25,7 @@ export default function GlassInput({
 
   return (
     <View>
-      <Text className="text-on-surface font-['Inter'] text-sm mb-2 ml-1">
+      <Text className="text-on-surface font-light text-sm mb-2 ml-1">
         {label}
       </Text>
       <View
@@ -39,7 +39,7 @@ export default function GlassInput({
           color={isFocused ? "#a3c9ff" : "#8a919e"}
         />
         <TextInput
-          className="flex-1 text-on-surface font-['Inter'] ml-3 text-base"
+          className="flex-1 text-on-surface font-light ml-3 text-base"
           placeholderTextColor="#8a919e"
           secureTextEntry={isPassword && !showPassword}
           onFocus={() => setIsFocused(true)}
