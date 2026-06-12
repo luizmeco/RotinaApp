@@ -11,7 +11,7 @@ module.exports = {
     extend: {
       colors: {
         // Cores base extraídas do seu DESIGN.md
-        background: "#0e141a",
+        background: "#002a55",
         "on-background": "#dde3ec",
         surface: "#0e141a",
         "surface-bright": "#343a41",
@@ -30,7 +30,7 @@ module.exports = {
 
         // Cores de sotaque (Liquid Cyan / Vidro)
         accent: "#50E6FF",
-        "glass-white": "rgba(255, 255, 255, 0.08)",
+        "glass-white": "rgba(255, 255, 255, 0.02)",
         "glass-border": "rgba(255, 255, 255, 0.1)",
 
         // Erro
@@ -56,6 +56,10 @@ module.exports = {
         mobile: "16px",
         desktop: "64px",
         panel: "24px",
+      },
+      boxShadow: {
+        // offset-x | offset-y | blur-radius | color(rgba)
+        neon: "0px 5px 15px rgba(0, 0, 0, 0.30)",
       },
     },
   },

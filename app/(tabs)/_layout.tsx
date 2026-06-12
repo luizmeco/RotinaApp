@@ -16,12 +16,17 @@ export default function TabsLayout() {
           right: 50,
           height: 64,
           borderRadius: 24,
-          backgroundColor: "rgba(255, 255, 255, 0.08)", // glass-white
+          backgroundColor: "rgba(255, 255, 255, 0.02)", // glass-white
           borderWidth: 1,
           borderColor: "rgba(255, 255, 255, 0.1)", // glass-border
           borderTopWidth: 1, // RN insere uma borda no topo por padrão
           borderTopColor: "rgba(255, 255, 255, 0.1)",
-          elevation: 0, // Remove a sombra padrão do Android
+
+          shadowColor: "#000000", // Usando o primary-light para combinar com os ícones ativos
+          shadowOffset: { width: 0, height: 5 }, // 0 e 0 para espalhar para todos os lados
+          shadowOpacity: 0.40, // Intensidade da "luz"
+          shadowRadius: 15, // O quão difusa a luz será (blur)
+          elevation: 15, // A elevação faz o Android criar e renderizar a sombra
         },
         tabBarBackground: () => (
           <BlurView
@@ -66,7 +71,7 @@ export default function TabsLayout() {
         options={{
           title: "Profile",
           tabBarIcon: ({ color }) => (
-            <SimpleLineIcons name="user" size={20} color={color} />
+            <SimpleLineIcons name="user" size={20} color={color}  />
           ),
         }}
       />
