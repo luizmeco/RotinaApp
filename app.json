@@ -31,14 +31,11 @@
       "favicon": "./assets/RotinaAPP.png",
       "name": "RotinaApp",
       "shortName": "RotinaApp",
-      "themeColor": "#182838fa", 
-      "backgroundColor": "#182838fa",
+      "themeColor": "#182838",
+      "backgroundColor": "#182838",
       "display": "standalone",
       "orientation": "portrait"
     },
-    "plugins": [
-      "expo-font",
-      "expo-router"
-    ]
+    "plugins": ["expo-font", "expo-router"]
   }
 }
