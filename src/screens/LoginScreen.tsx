@@ -7,7 +7,7 @@ import GlassCard from "../components/GlassCard";
 import GlassInput from "../components/GlassInput";
 import PrimaryButton from "../components/PrimaryButton";
 import { useThemeColors } from "../hooks/useThemeColors";
-import { useLogin } from "../services/useLogin";
+import { useLogin } from "../services/LoginService";
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -104,7 +104,7 @@ export default function LoginScreen() {
         <PrimaryButton
           title={loading ? "Entrando..." : "Entrar"}
           iconName="arrow-right"
-          colorClass="bg-primary/50"
+          colorClass="bg-primary/90"
           textColorClass="text-on-primary"
           disabled={loading}
           onPress={handleLogin}
