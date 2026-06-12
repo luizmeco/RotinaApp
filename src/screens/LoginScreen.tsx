@@ -6,7 +6,8 @@ import Background from "../components/Background";
 import GlassCard from "../components/GlassCard";
 import GlassInput from "../components/GlassInput";
 import PrimaryButton from "../components/PrimaryButton";
-import { useLogin } from "../hooks/LoginHook";
+import { useThemeColors } from "../hooks/useThemeColors";
+import { useLogin } from "../services/useLogin";
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -22,6 +23,7 @@ export default function LoginScreen() {
     errorMessage,
     handleLogin,
   } = useLogin();
+  const colors = useThemeColors();
 
   return (
     <Background>
@@ -31,7 +33,7 @@ export default function LoginScreen() {
         <View className="items-center mb-8">
           {/* Logo Placeholder (Você pode trocar por um <Image /> depois) */}
           <View className="w-16 h-16 bg-glass-white rounded-2xl items-center justify-center mb-4 border border-glass-border">
-            <Feather name="map-pin" size={32} className="text-primary-light" />
+            <Feather name="map-pin" size={32} color={colors["primary-light"]} />
           </View>
           <Text className="text-on-surface font-bold text-2xl">
             Bem-vindo de volta
@@ -102,8 +104,8 @@ export default function LoginScreen() {
         <PrimaryButton
           title={loading ? "Entrando..." : "Entrar"}
           iconName="arrow-right"
-          colorClass="bg-primary/70"
-          textColorClass="text-on-primary" 
+          colorClass="bg-primary/50"
+          textColorClass="text-on-primary"
           disabled={loading}
           onPress={handleLogin}
         />

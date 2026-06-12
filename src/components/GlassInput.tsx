@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useThemeColors } from "../hooks/useThemeColors";
 
 interface GlassInputProps extends TextInputProps {
   label: string;
@@ -22,6 +23,7 @@ export default function GlassInput({
 }: GlassInputProps) {
   const [isFocused, setIsFocused] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const colors = useThemeColors();
 
   return (
     <View>
@@ -29,14 +31,14 @@ export default function GlassInput({
         {label}
       </Text>
       <View
-        className={`flex-row items-center bg-glass-white border rounded-xl px-4 h-14 transition-colors ${
+        className={`flex-row items-center shadow-neon bg-glass-white border rounded-xl px-4 h-14 transition-colors ${
           isFocused ? "border-primary" : "border-glass-border"
         }`}
       >
         <Feather
           name={iconName}
           size={20}
-          className={isFocused ? "text-primary-light" : "text-outline"}
+          color={isFocused ? colors["primary-light"] : colors.outline}
         />
         <TextInput
           className="flex-1 text-on-surface font-light ml-3 text-base placeholder:text-outline"
@@ -53,7 +55,7 @@ export default function GlassInput({
             <Feather
               name={showPassword ? "eye" : "eye-off"}
               size={20}
-              className="text-outline"
+              color={colors.outline}
             />
           </TouchableOpacity>
         )}

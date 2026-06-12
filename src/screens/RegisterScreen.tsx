@@ -6,7 +6,8 @@ import Background from "../components/Background";
 import GlassCard from "../components/GlassCard";
 import GlassInput from "../components/GlassInput";
 import PrimaryButton from "../components/PrimaryButton";
-import { useRegister } from "../hooks/RegisterHook";
+import { useThemeColors } from "../hooks/useThemeColors";
+import { useRegister } from "../services/useRegister";
 
 export default function RegisterScreen() {
   const router = useRouter();
@@ -24,6 +25,7 @@ export default function RegisterScreen() {
     errorMessage,
     handleRegister,
   } = useRegister();
+  const colors = useThemeColors();
 
   return (
     <Background>
@@ -34,7 +36,7 @@ export default function RegisterScreen() {
             <Feather
               name="user-plus"
               size={32}
-              className="text-primary-light"
+              color={colors["primary-light"]}
             />
           </View>
           <Text className="text-on-surface font-bold text-2xl">

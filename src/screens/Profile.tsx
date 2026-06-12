@@ -1,16 +1,13 @@
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
-import tailwindConfig from "../../tailwind.config";
 import Background from "../components/Background";
 import PrimaryButton from "../components/PrimaryButton";
-
-const colors = (tailwindConfig?.theme?.extend?.colors ?? {}) as Record<
-  string,
-  string
->;
+import { useThemeColors } from "../hooks/useThemeColors";
 
 export default function Profile() {
+  const colors = useThemeColors();
+
   return (
     <Background>
       {/* Avatar e Informações do Usuário */}
@@ -55,11 +52,11 @@ export default function Profile() {
 
       {/* Botão de Logout */}
       <PrimaryButton
-          title={"Logout"}
-          iconName="logout"
-          colorClass="bg-error/30"
-          textColorClass="text-on-primary"
-        />
+        title={"Logout"}
+        iconName="logout"
+        colorClass="bg-error/30"
+        textColorClass="text-on-primary"
+      />
     </Background>
   );
 }

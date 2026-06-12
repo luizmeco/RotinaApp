@@ -19,7 +19,7 @@ export default function PrimaryButton({
 }: PrimaryButtonProps) {
   return (
     <TouchableOpacity
-      className={`${colorClass} border border-glass-border shadow-lg shadow-white/10 h-14 rounded-xl flex-row items-center justify-center gap-2`}
+      className={`${colorClass} border border-glass-border shadow-neon h-14 rounded-xl flex-row items-center justify-center gap-2`}
       activeOpacity={0.8}
       {...props}
     >
