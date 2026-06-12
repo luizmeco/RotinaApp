@@ -27,14 +27,7 @@
     },
     "web": {
       "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/RotinaAPP.png",
-      "name": "RotinaApp",
-      "shortName": "RotinaApp",
-      "themeColor": "#182838",
-      "backgroundColor": "#182838",
-      "display": "standalone",
-      "orientation": "portrait"
+      "favicon": "./assets/RotinaAPP.png"
     },
     "plugins": ["expo-font", "expo-router"]
   }
