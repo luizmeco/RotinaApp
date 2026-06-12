@@ -26,7 +26,15 @@
       "package": "com.anonymous.rotinaapp"
     },
     "web": {
-      "favicon": "./assets/RotinaAPPIcon.png"
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/RotinaAPP.png",
+      "name": "RotinaApp",
+      "shortName": "RotinaApp",
+      "themeColor": "#182838fa", 
+      "backgroundColor": "#182838fa",
+      "display": "standalone",
+      "orientation": "portrait"
     },
     "plugins": [
       "expo-font",
