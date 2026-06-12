@@ -31,7 +31,7 @@ export default function GlassInput({
         {label}
       </Text>
       <View
-        className={`flex-row items-center shadow-neon bg-glass-white border rounded-xl px-4 h-14 transition-colors ${
+        className={`flex-row items-center shadow-shadow bg-glass-white border rounded-xl px-4 h-14 transition-colors ${
           isFocused ? "border-primary" : "border-glass-border"
         }`}
       >

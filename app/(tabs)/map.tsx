@@ -1,6 +1,6 @@
 import React from "react";
-import Tasks from "../../src/screens/Tasks";
+import MapScreen from "../../src/screens/MapScreen";
 
 export default function RegisterRoute() {
-  return <Tasks />;
+  return <MapScreen />;
 }

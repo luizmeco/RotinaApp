@@ -51,7 +51,7 @@ export function TaskCard({
 
   return (
     // 1. Container principal com "overflow-hidden"
-    <View className="mb-6 bg-glass-white shadow-neon rounded-lg">
+    <View className="mb-6 bg-glass-white shadow-shadow rounded-lg">
       <View className="flex-row border border-glass-border rounded-lg overflow-hidden">
         {/* 2. Barra lateral colorida - O lado direito dela agora é uma linha reta perfeita */}
         <View className={`w-1.5 ${styles.barBg}`} />

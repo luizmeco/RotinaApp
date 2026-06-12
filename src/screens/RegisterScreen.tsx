@@ -7,7 +7,7 @@ import GlassCard from "../components/GlassCard";
 import GlassInput from "../components/GlassInput";
 import PrimaryButton from "../components/PrimaryButton";
 import { useThemeColors } from "../hooks/useThemeColors";
-import { useRegister } from "../services/useRegister";
+import { useRegister } from "../services/RegisterService";
 
 export default function RegisterScreen() {
   const router = useRouter();
