@@ -1,6 +1,7 @@
 import { BlurView } from "expo-blur";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
+  Animated,
   KeyboardAvoidingView,
   Modal,
   Platform,
@@ -11,6 +12,7 @@ import {
 } from "react-native";
 import GlassInput from "../GlassInput";
 import PrimaryButton from "../PrimaryButton";
+import GlassInputDate from "../GlassInputDate";
 
 interface CreateTaskModalProps {
   isVisible: boolean;
@@ -23,6 +25,17 @@ export default function CreateTaskModal({
 }: CreateTaskModalProps) {
   const [newTaskTitle, setNewTaskTitle] = useState("");
 
+  // Animação de Fade para o BlurView do fundo usando a API nativa
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: isVisible ? 1 : 0,
+      duration: 300,
+      useNativeDriver: true, // Melhora a performance
+    }).start();
+  }, [isVisible]);
+
   const handleCreate = () => {
     console.log("Botão clicado! Dados:", { newTaskTitle });
     setNewTaskTitle(""); // Limpa o estado para o próximo uso
@@ -31,15 +44,20 @@ export default function CreateTaskModal({
 
   return (
     <>
-      <BlurView
-        intensity={isVisible ? 30 : 1}
-        tint="dark"
-        experimentalBlurMethod="dimezisBlurView" // Força o blur a funcionar no Android
-        style={StyleSheet.absoluteFill}
-        className={`transition delay-150 duration-200 ease-in ${
-          isVisible ? "" : "hidden"
-        }`}
-      />
+      <Animated.View
+        style={[
+          StyleSheet.absoluteFill,
+          { opacity: fadeAnim, zIndex: 100, elevation: 100 },
+        ]}
+        pointerEvents="none"
+      >
+        <BlurView
+          intensity={80} // Aumentado para 80 para um efeito Glassmorphism forte
+          tint="dark"
+          experimentalBlurMethod="dimezisBlurView"
+          style={StyleSheet.absoluteFill}
+        />
+      </Animated.View>
 
       {/* Modal de Criação de Tarefa (Bottom Sheet) */}
       <Modal
@@ -67,14 +85,26 @@ export default function CreateTaskModal({
             </Text>
 
             {/* Formulário Visual */}
-            <View className="mb-8">
-              <GlassInput
-                label="Título da Tarefa"
-                iconName="check-square"
-                placeholder="Ex: Fazer compras..."
-                value={newTaskTitle}
-                onChangeText={setNewTaskTitle}
-              />
+            <View className="flex-col md:flex-row gap-4 mb-8">
+              <View className="flex-1">
+                <GlassInput
+                  label="Título da Tarefa"
+                  iconName="check-square"
+                  placeholder="Ex: Fazer compras..."
+                  value={newTaskTitle}
+                  onChangeText={setNewTaskTitle}
+                />
+              </View>
+
+              <View className="flex-1">
+                <GlassInput
+                  label="Descrição"
+                  iconName="align-left"
+                  placeholder="Descrição da tarefa..."
+                  value={newTaskTitle}
+                  onChangeText={setNewTaskTitle}
+                />
+              </View>
             </View>
 
             <PrimaryButton

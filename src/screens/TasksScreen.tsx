@@ -40,7 +40,7 @@ export default function Tasks() {
 
   return (
     <Background noScroll>
-      <View className="flex-1 pt-12">
+      <View className="flex-1 pt-12 w-[90vw]">
         <Text className="text-primary-light font-semibold text-3xl mb-4 px-6">
           Minhas Tarefas
         </Text>
