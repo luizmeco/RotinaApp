@@ -21,7 +21,7 @@ export default function Background({
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      className="flex-1 bg-background"
+      className="flex-1 bg-background items-center"
     >
       <StatusBar style="light" />
 

@@ -41,7 +41,7 @@ export default function GlassInput({
           color={isFocused ? colors["primary-light"] : colors.outline}
         />
         <TextInput
-          className="flex-1 text-on-surface font-light ml-3 text-base placeholder:text-outline"
+          className="flex-1 text-on-surface font-light ml-3 text-base placeholder:text-outline border-none outline-none"
           secureTextEntry={isPassword && !showPassword}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
