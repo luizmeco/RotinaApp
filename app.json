@@ -14,7 +14,10 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Permissão para acessar sua localização e mostrar no mapa."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -23,7 +26,8 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.anonymous.rotinaapp"
+      "package": "com.anonymous.rotinaapp",
+      "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"]
     },
     "web": {
       "bundler": "metro",
@@ -32,7 +36,13 @@
     "plugins": [
       "expo-font",
       "expo-router",
-      "@react-native-community/datetimepicker"
+      "@react-native-community/datetimepicker",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Permissão para acessar sua localização e mostrar no mapa."
+        }
+      ]
     ]
   }
 }

@@ -4,7 +4,7 @@ import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import Background from "../components/Background";
 import LoadingScreen from "../components/LoadingScreen";
 import { Priority, TaskCard } from "../components/taskScreen/TaskItem";
-import { FilterOption, useTasks } from "../services/TasksService";
+import { useTasks } from "../services/TasksService";
 import CreateTaskModal from "../components/taskScreen/CreateTaskModal";
 import TaskFilters from "../components/taskScreen/TaskFilters";
 
