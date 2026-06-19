@@ -8,6 +8,8 @@ export interface Task {
   description: string | null;
   status: string;
   priority: string;
+  latitude: number;
+  longitude: number;
 }
 
 export type FilterOption = "all" | "alta" | "media" | "baixa";
