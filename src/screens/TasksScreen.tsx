@@ -26,6 +26,7 @@ export default function Tasks() {
     tasks,
     loading,
     filteredTasks,
+    fetchTasks,
     selectedFilter,
     setSelectedFilter,
     handleToggleTask,
@@ -92,6 +93,7 @@ export default function Tasks() {
         <CreateTaskModal
           isVisible={isCreateModalVisible}
           onClose={() => setCreateModalVisible(false)}
+          onTaskCreated={fetchTasks}
         />
       </View>
     </Background>
