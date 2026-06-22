@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Alert } from "react-native";
 import { supabase } from "../lib/supabase";
 
@@ -22,6 +22,7 @@ const initialFormData: CreateTaskFormData = {
 
 export function useCreateTaskForm(onSuccess?: () => void) {
   const [formData, setFormData] = useState<CreateTaskFormData>(initialFormData);
+  const [editingTaskId, setEditingTaskId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -69,7 +70,30 @@ export function useCreateTaskForm(onSuccess?: () => void) {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Envia a tarefa para o Supabase
+  // Preenche o formulário com os dados de uma tarefa existente (modo edição)
+  const populateForm = useCallback(
+    (task: {
+      id: string;
+      title: string;
+      description: string | null;
+      priority: string;
+      latitude: number;
+      longitude: number;
+    }) => {
+      setEditingTaskId(task.id);
+      setFormData({
+        title: task.title,
+        description: task.description || "",
+        priority: task.priority as TaskPriority,
+        latitude: task.latitude,
+        longitude: task.longitude,
+      });
+      setErrors({});
+    },
+    [],
+  );
+
+  // Envia a tarefa para o Supabase (criação)
   const handleCreate = async () => {
     if (!validate()) return;
 
@@ -109,9 +133,49 @@ export function useCreateTaskForm(onSuccess?: () => void) {
     }
   };
 
+  // Atualiza a tarefa existente no Supabase (edição)
+  const handleUpdate = async () => {
+    if (!validate() || !editingTaskId) return;
+
+    try {
+      setLoading(true);
+
+      const { error } = await supabase
+        .from("tasks")
+        .update({
+          title: formData.title.trim(),
+          description: formData.description.trim() || null,
+          latitude: formData.latitude,
+          longitude: formData.longitude,
+          priority: formData.priority,
+        })
+        .eq("id", editingTaskId);
+
+      if (error) throw error;
+
+      // Sucesso: limpa o formulário e chama o callback
+      resetForm();
+      onSuccess?.();
+    } catch (error: any) {
+      Alert.alert("Erro ao atualizar tarefa", error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Função genérica que decide entre criar ou atualizar
+  const handleSubmit = async () => {
+    if (editingTaskId) {
+      await handleUpdate();
+    } else {
+      await handleCreate();
+    }
+  };
+
   // Reseta o formulário para o estado inicial
   const resetForm = () => {
     setFormData(initialFormData);
+    setEditingTaskId(null);
     setErrors({});
   };
 
@@ -119,9 +183,13 @@ export function useCreateTaskForm(onSuccess?: () => void) {
     formData,
     loading,
     errors,
+    isEditing: !!editingTaskId,
     setField,
     setCoordinates,
     handleCreate,
+    handleUpdate,
+    handleSubmit,
+    populateForm,
     resetForm,
   };
 }

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { useCreateTaskForm } from "../../services/CreateTaskFormService";
+import { Task } from "../../services/TasksService";
 import GlassInput from "../GlassInput";
 import GlassMapPicker from "../GlassMapPicker";
 import GlassPrioritySelector from "../GlassPrioritySelector";
@@ -11,25 +12,37 @@ interface CreateTaskModalProps {
   isVisible: boolean;
   onClose: () => void;
   onTaskCreated?: () => void;
+  /** Se fornecido, o modal entra em modo de edição com os dados da tarefa */
+  task?: Task | null;
 }
 
 export default function CreateTaskModal({
   isVisible,
   onClose,
   onTaskCreated,
+  task,
 }: CreateTaskModalProps) {
   const {
     formData,
     loading,
     errors,
+    isEditing,
     setField,
     setCoordinates,
-    handleCreate,
+    handleSubmit,
+    populateForm,
     resetForm,
   } = useCreateTaskForm(() => {
     onTaskCreated?.();
     onClose();
   });
+
+  // Quando o modal abre com uma tarefa, popula o formulário
+  useEffect(() => {
+    if (isVisible && task) {
+      populateForm(task);
+    }
+  }, [isVisible, task, populateForm]);
 
   const handleClose = () => {
     resetForm();
@@ -39,7 +52,7 @@ export default function CreateTaskModal({
   return (
     <GlassModal isVisible={isVisible} onClose={handleClose}>
       <Text className="text-on-surface font-bold text-2xl mb-4">
-        Nova Tarefa
+        {isEditing ? "Editar Tarefa" : "Nova Tarefa"}
       </Text>
 
       <ScrollView
@@ -94,11 +107,19 @@ export default function CreateTaskModal({
           />
         </View>
 
-        {/* Botão de Criar */}
+        {/* Botão de Criar / Salvar */}
         <PrimaryButton
-          title={loading ? "Criando..." : "Criar Tarefa"}
-          iconName="plus"
-          onPress={handleCreate}
+          title={
+            loading
+              ? isEditing
+                ? "Salvando..."
+                : "Criando..."
+              : isEditing
+                ? "Salvar Alterações"
+                : "Criar Tarefa"
+          }
+          iconName={isEditing ? "note" : "plus"}
+          onPress={handleSubmit}
           disabled={loading}
         />
       </ScrollView>

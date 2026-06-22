@@ -150,6 +150,7 @@ export default function GlassMapPicker({
               ref={mapRef}
               style={StyleSheet.absoluteFillObject}
               provider={PROVIDER_DEFAULT}
+              userInterfaceStyle="dark"
               initialRegion={initialRegion}
               showsUserLocation={true}
               showsMyLocationButton={false}
