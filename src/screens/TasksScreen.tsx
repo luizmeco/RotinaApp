@@ -1,10 +1,11 @@
 import { Feather } from "@expo/vector-icons";
-import React, { useState } from "react";
+import * as Location from "expo-location";
+import React, { useEffect, useState } from "react";
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import Background from "../components/Background";
 import LoadingScreen from "../components/LoadingScreen";
 import { Priority, TaskCard } from "../components/taskScreen/TaskItem";
-import { useTasks } from "../services/TasksService";
+import { Task, useTasks } from "../services/TasksService";
 import CreateTaskModal from "../components/taskScreen/CreateTaskModal";
 import TaskFilters from "../components/taskScreen/TaskFilters";
 
@@ -32,8 +33,24 @@ export default function Tasks() {
     handleToggleTask,
   } = useTasks();
 
-  // Estados para controle visual do Modal de Criação (Sem banco de dados por enquanto)
+  // Estados para controle visual do Modal de Criação/Edição
   const [isCreateModalVisible, setCreateModalVisible] = useState(false);
+  const [editingTask, setEditingTask] = useState<Task | null>(null);
+
+  const handleOpenEditModal = (task: Task) => {
+    setEditingTask(task);
+    setCreateModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setCreateModalVisible(false);
+    setEditingTask(null);
+  };
+
+  // Solicita permissão de localização assim que a tela home carregar
+  useEffect(() => {
+    Location.requestForegroundPermissionsAsync();
+  }, []);
 
   if (loading) {
     return <LoadingScreen />;
@@ -75,6 +92,7 @@ export default function Tasks() {
                 priority={mapPriority(item.priority)}
                 isCompleted={item.status === "concluida"}
                 onToggle={() => handleToggleTask(item.id, item.status)}
+                onPress={() => handleOpenEditModal(item)}
               />
             )}
           />
@@ -89,11 +107,12 @@ export default function Tasks() {
           <Feather name="plus" size={28} color="white" />
         </TouchableOpacity>
 
-        {/* Modal de Criação de Tarefa (Bottom Sheet) */}
+        {/* Modal de Criação/Edição de Tarefa (Bottom Sheet) */}
         <CreateTaskModal
           isVisible={isCreateModalVisible}
-          onClose={() => setCreateModalVisible(false)}
+          onClose={handleCloseModal}
           onTaskCreated={fetchTasks}
+          task={editingTask}
         />
       </View>
     </Background>

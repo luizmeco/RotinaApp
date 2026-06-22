@@ -10,6 +10,7 @@ interface TaskCardProps {
   priority: Priority;
   isCompleted: boolean;
   onToggle: () => void;
+  onPress?: () => void;
 }
 
 // Mapeamento dinâmico: agora usamos 'barBg' em vez de borda
@@ -46,15 +47,24 @@ export function TaskCard({
   priority,
   isCompleted,
   onToggle,
+  onPress,
 }: TaskCardProps) {
   const styles = priorityStyles[priority];
 
   return (
     // 1. Container principal com "overflow-hidden"
-    <View className="mb-6 bg-glass-white shadow-shadow rounded-lg">
-      <View className="flex-row border border-glass-border rounded-lg overflow-hidden">
-        {/* 2. Barra lateral colorida - O lado direito dela agora é uma linha reta perfeita */}
-        <View className={`w-1.5 ${styles.barBg}`} />
+    <TouchableOpacity
+      activeOpacity={isCompleted ? 1 : 0.7}
+      onPress={isCompleted ? undefined : onPress}
+      className={`mb-6 rounded-lg ${isCompleted ? "opacity-50" : "bg-glass-white shadow-shadow"}`}
+    >
+      <View
+        className={`flex-row border rounded-lg overflow-hidden ${isCompleted ? "border-slate-700/50" : "border-glass-border"}`}
+      >
+        {/* 2. Barra lateral colorida - cinza quando concluída */}
+        <View
+          className={`w-1.5 ${isCompleted ? "bg-slate-600" : styles.barBg}`}
+        />
 
         {/* 3. Container do conteúdo principal */}
         <View className="flex-1 flex-row items-center justify-between p-4">
@@ -78,14 +88,21 @@ export function TaskCard({
 
             <View className="flex-1">
               <Text
-                className={`text-white text-base font-semibold ${isCompleted ? "line-through text-slate-500" : ""}`}
+                className={`text-base font-semibold ${isCompleted ? "line-through text-slate-600" : "text-white"}`}
                 numberOfLines={1}
               >
                 {title}
               </Text>
               <View className="flex-row items-center mt-1">
-                <Ionicons name="location-outline" size={14} color="#94a3b8" />
-                <Text className="text-slate-400 text-sm ml-1" numberOfLines={1}>
+                <Ionicons
+                  name="location-outline"
+                  size={14}
+                  color={isCompleted ? "#475569" : "#94a3b8"}
+                />
+                <Text
+                  className={`text-sm ml-1 ${isCompleted ? "text-slate-600" : "text-slate-400"}`}
+                  numberOfLines={1}
+                >
                   {location}
                 </Text>
               </View>
@@ -94,14 +111,20 @@ export function TaskCard({
 
           {/* Lado Direito: Badge de Prioridade */}
           <View
-            className={`px-3 py-1 rounded-full border ${styles.badgeBorder} ${styles.badgeBg} ${styles.shadowColor}`}
+            className={`px-3 py-1 rounded-full border ${
+              isCompleted
+                ? "border-slate-600/50 bg-slate-700/20"
+                : `${styles.badgeBorder} ${styles.badgeBg} ${styles.shadowColor}`
+            }`}
           >
-            <Text className={`text-xs font-medium ${styles.textColor}`}>
-              {styles.label}
+            <Text
+              className={`text-xs font-medium ${isCompleted ? "text-slate-600" : styles.textColor}`}
+            >
+              {isCompleted ? "Concluída" : styles.label}
             </Text>
           </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }

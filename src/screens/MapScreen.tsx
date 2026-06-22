@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
 import MapView, { Marker, PROVIDER_DEFAULT } from "react-native-maps";
 import * as Location from "expo-location";
 import { Ionicons } from "@expo/vector-icons";
+import { useFocusEffect } from "@react-navigation/native";
 import { useTasks } from "../services/TasksService";
 
 export default function MapScreen() {
@@ -31,10 +32,17 @@ export default function MapScreen() {
     longitudeDelta: 0.015,
   };
 
+  // Busca a localização do usuário na montagem
   useEffect(() => {
     getUserLocation();
-    fetchTasks();
   }, []);
+
+  // Busca as tarefas ativas toda vez que a tela ganha foco
+  useFocusEffect(
+    useCallback(() => {
+      fetchTasks();
+    }, []),
+  );
 
   const getUserLocation = async () => {
     try {
@@ -104,73 +112,15 @@ export default function MapScreen() {
     }
   };
 
-  // Gerar pins de teste mockados próximos se não houver tarefas cadastradas no banco
-  const getDisplayTasks = () => {
-    const databaseTasks = filteredTasks.filter(
-      (t) => t.latitude !== undefined && t.longitude !== undefined,
-    );
-    if (databaseTasks.length > 0) {
-      return databaseTasks;
-    }
-
-    // Se o usuário estiver com localização ativa, cria mock pins perto dele para testar
-    if (location) {
-      const { latitude, longitude } = location.coords;
-      return [
-        {
-          id: "mock-1",
-          title: "Exemplo: Passar no Mercado",
-          description: "Comprar leite, ovos e pão (Alta prioridade)",
-          priority: "alta",
-          latitude: latitude + 0.0015,
-          longitude: longitude + 0.0015,
-          status: "pendente",
-        },
-        {
-          id: "mock-2",
-          title: "Exemplo: Pagar conta de luz",
-          description: "A lotérica fecha às 17h (Média prioridade)",
-          priority: "media",
-          latitude: latitude - 0.0015,
-          longitude: longitude - 0.001,
-          status: "pendente",
-        },
-        {
-          id: "mock-3",
-          title: "Exemplo: Buscar Encomenda",
-          description: "Retirar nos Correios (Baixa prioridade)",
-          priority: "baixa",
-          latitude: latitude - 0.0005,
-          longitude: longitude + 0.002,
-          status: "pendente",
-        },
-      ];
-    }
-
-    // Caso contrário, usa pins mockados em São Paulo
-    return [
-      {
-        id: "mock-sp-1",
-        title: "Exemplo: Passar no Mercado",
-        description: "Comprar leite, ovos e pão (Alta prioridade)",
-        priority: "alta",
-        latitude: -23.55052 + 0.0015,
-        longitude: -46.633308 + 0.0015,
-        status: "pendente",
-      },
-      {
-        id: "mock-sp-2",
-        title: "Exemplo: Pagar conta de luz",
-        description: "A lotérica fecha às 17h (Média prioridade)",
-        priority: "media",
-        latitude: -23.55052 - 0.0015,
-        longitude: -46.633308 - 0.001,
-        status: "pendente",
-      },
-    ];
-  };
-
-  const displayTasks = getDisplayTasks();
+  // Filtra apenas tarefas pendentes que possuem coordenadas válidas no banco de dados
+  const tasksWithLocation = filteredTasks.filter(
+    (t) =>
+      t.status !== "concluida" &&
+      t.latitude !== undefined &&
+      t.latitude !== null &&
+      t.longitude !== undefined &&
+      t.longitude !== null,
+  );
 
   // Renderizar estado de carregamento inicial
   if (loading && !location) {
@@ -224,6 +174,7 @@ export default function MapScreen() {
         ref={mapRef}
         style={StyleSheet.absoluteFillObject}
         provider={PROVIDER_DEFAULT}
+        userInterfaceStyle="dark"
         initialRegion={
           location
             ? {
@@ -235,10 +186,10 @@ export default function MapScreen() {
             : defaultRegion
         }
         showsUserLocation={true}
-        showsMyLocationButton={false} // Desabilitamos o nativo para usar nosso botão premium customizado
+        showsMyLocationButton={false}
         showsCompass={true}
       >
-        {displayTasks.map((task) => (
+        {tasksWithLocation.map((task) => (
           <Marker
             key={task.id}
             coordinate={{ latitude: task.latitude, longitude: task.longitude }}
@@ -255,9 +206,9 @@ export default function MapScreen() {
           Mapa de Tarefas
         </Text>
         <Text className="text-on-surface-variant font-light text-sm mt-1">
-          {location
-            ? `${displayTasks.length} tarefas exibidas nesta região.`
-            : "Mostrando região padrão (Permissão negada ou carregando)."}
+          {tasksWithLocation.length > 0
+            ? `${tasksWithLocation.length} tarefa${tasksWithLocation.length !== 1 ? "s" : ""} com localização.`
+            : "Nenhuma tarefa com localização cadastrada."}
         </Text>
         {errorMsg && (
           <Text className="text-error font-light text-xs mt-1">{errorMsg}</Text>
