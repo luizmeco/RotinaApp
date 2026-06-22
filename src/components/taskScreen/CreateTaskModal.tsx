@@ -1,61 +1,107 @@
-import React, { useState } from "react";
-import { Text, View } from "react-native";
+import React from "react";
+import { ScrollView, Text, View } from "react-native";
+import { useCreateTaskForm } from "../../services/CreateTaskFormService";
 import GlassInput from "../GlassInput";
-import PrimaryButton from "../PrimaryButton";
-import GlassInputDate from "../GlassInputDate";
+import GlassMapPicker from "../GlassMapPicker";
+import GlassPrioritySelector from "../GlassPrioritySelector";
 import GlassModal from "../GlassModal";
+import PrimaryButton from "../PrimaryButton";
 
 interface CreateTaskModalProps {
   isVisible: boolean;
   onClose: () => void;
+  onTaskCreated?: () => void;
 }
 
 export default function CreateTaskModal({
   isVisible,
   onClose,
+  onTaskCreated,
 }: CreateTaskModalProps) {
-  const [newTaskTitle, setNewTaskTitle] = useState("");
+  const {
+    formData,
+    loading,
+    errors,
+    setField,
+    setCoordinates,
+    handleCreate,
+    resetForm,
+  } = useCreateTaskForm(() => {
+    onTaskCreated?.();
+    onClose();
+  });
 
-  const handleCreate = () => {
-    console.log("Botão clicado! Dados:", { newTaskTitle });
-    setNewTaskTitle(""); // Limpa o estado para o próximo uso
+  const handleClose = () => {
+    resetForm();
     onClose();
   };
 
   return (
-    <GlassModal isVisible={isVisible} onClose={onClose}>
-      <Text className="text-on-surface font-bold text-2xl mb-6">
+    <GlassModal isVisible={isVisible} onClose={handleClose}>
+      <Text className="text-on-surface font-bold text-2xl mb-4">
         Nova Tarefa
       </Text>
 
-      {/* Formulário Visual */}
-      <View className="flex-col md:flex-row gap-4 mb-8">
-        <View className="flex-auto">
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{ paddingBottom: 16 }}
+      >
+        {/* Título */}
+        <View className="mb-4">
           <GlassInput
-            label="Título da Tarefa"
+            label="Título da Tarefa *"
             iconName="check-square"
             placeholder="Ex: Fazer compras..."
-            value={newTaskTitle}
-            onChangeText={setNewTaskTitle}
+            value={formData.title}
+            onChangeText={(text) => setField("title", text)}
           />
+          {errors.title && (
+            <Text className="text-error text-xs font-light mt-1 ml-1">
+              {errors.title}
+            </Text>
+          )}
         </View>
 
-        <View className="flex-auto">
+        {/* Descrição */}
+        <View className="mb-4">
           <GlassInput
             label="Descrição"
             iconName="align-left"
             placeholder="Descrição da tarefa..."
-            value={newTaskTitle}
-            onChangeText={setNewTaskTitle}
+            value={formData.description}
+            onChangeText={(text) => setField("description", text)}
           />
         </View>
-      </View>
 
-      <PrimaryButton
-        title="Criar Tarefa"
-        iconName="plus"
-        onPress={handleCreate}
-      />
+        {/* Prioridade */}
+        <View className="mb-4">
+          <GlassPrioritySelector
+            label="Prioridade"
+            value={formData.priority}
+            onChange={(priority) => setField("priority", priority)}
+          />
+        </View>
+
+        {/* Localização (Mapa) */}
+        <View className="mb-6">
+          <GlassMapPicker
+            label="Localização *"
+            latitude={formData.latitude}
+            longitude={formData.longitude}
+            onLocationSelect={setCoordinates}
+            error={errors.location}
+          />
+        </View>
+
+        {/* Botão de Criar */}
+        <PrimaryButton
+          title={loading ? "Criando..." : "Criar Tarefa"}
+          iconName="plus"
+          onPress={handleCreate}
+          disabled={loading}
+        />
+      </ScrollView>
     </GlassModal>
   );
 }
