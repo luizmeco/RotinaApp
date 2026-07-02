@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { Linking } from "react-native";
 import * as Location from "expo-location";
 import MapView from "react-native-maps";
 import { useFocusEffect } from "@react-navigation/native";
@@ -42,6 +43,18 @@ export function useMapScreen() {
     try {
       setLoading(true);
       setErrorMsg(null);
+
+      // Se a permissão já foi negada anteriormente, abrimos as configurações do sistema
+      const current = await Location.getForegroundPermissionsAsync();
+      if (current.status === Location.PermissionStatus.DENIED) {
+        setPermissionStatus(Location.PermissionStatus.DENIED);
+        setErrorMsg(
+          "Permissão de localização negada. Por favor, ative nas configurações.",
+        );
+        await Linking.openSettings();
+        setLoading(false);
+        return;
+      }
 
       const { status } = await Location.requestForegroundPermissionsAsync();
       setPermissionStatus(status);

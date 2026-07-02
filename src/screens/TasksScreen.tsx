@@ -31,6 +31,7 @@ export default function Tasks() {
     selectedFilter,
     setSelectedFilter,
     handleToggleTask,
+    isOffline,
   } = useTasks();
 
   // Estados para controle visual do Modal de Criação/Edição
@@ -62,6 +63,15 @@ export default function Tasks() {
         <Text className="text-primary-light font-semibold text-3xl mb-4 px-6">
           Minhas Tarefas
         </Text>
+
+        {isOffline && (
+          <View className="mx-6 mb-4 p-3 bg-error/20 border border-error/40 rounded-xl flex-row items-center gap-2">
+            <Feather name="wifi-off" size={16} color="#ff7869" />
+            <Text className="text-error font-medium text-xs">
+              Modo Offline - Exibindo tarefas salvas localmente.
+            </Text>
+          </View>
+        )}
 
         {/* Barra de Filtros de Prioridade */}
         <TaskFilters
