@@ -16,6 +16,8 @@ import {
 } from "@expo-google-fonts/hanken-grotesk";
 import LoadingScreen from "../src/components/LoadingScreen";
 
+import { ProximityProvider } from "../src/services/ProximityService";
+
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -85,24 +87,26 @@ export default function RootLayout() {
     !authInitialized || (session && !inTabsGroup) || (!session && !inAuthGroup);
 
   return (
-    <View style={{ flex: 1 }}>
-      <Stack>
-        <Stack.Screen
-          name="(auth)"
-          options={{ headerShown: false, animation: "none" }}
-        />
-        <Stack.Screen
-          name="(tabs)"
-          options={{ headerShown: false, animation: "none" }}
-        />
-      </Stack>
+    <ProximityProvider>
+      <View style={{ flex: 1 }}>
+        <Stack>
+          <Stack.Screen
+            name="(auth)"
+            options={{ headerShown: false, animation: "none" }}
+          />
+          <Stack.Screen
+            name="(tabs)"
+            options={{ headerShown: false, animation: "none" }}
+          />
+        </Stack>
 
-      {/* Sobrepõe a nossa LoadingScreen caso o sistema ainda esteja decidindo rotas ou carregando a Auth */}
-      {isRouting && (
-        <View style={StyleSheet.absoluteFill} className="z-50">
-          <LoadingScreen />
-        </View>
-      )}
-    </View>
+        {/* Sobrepõe a nossa LoadingScreen caso o sistema ainda esteja decidindo rotas ou carregando a Auth */}
+        {isRouting && (
+          <View style={StyleSheet.absoluteFill} className="z-50">
+            <LoadingScreen />
+          </View>
+        )}
+      </View>
+    </ProximityProvider>
   );
 }

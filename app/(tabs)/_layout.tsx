@@ -3,6 +3,7 @@ import { BlurView } from "expo-blur";
 import { Tabs } from "expo-router";
 import React from "react";
 import { StyleSheet } from "react-native";
+import { ProximityProvider } from "../../src/services/ProximityService";
 
 export default function TabsLayout() {
   return (
@@ -24,7 +25,7 @@ export default function TabsLayout() {
 
           shadowColor: "#000000", // Usando o primary-light para combinar com os ícones ativos
           shadowOffset: { width: 0, height: 5 }, // 0 e 0 para espalhar para todos os lados
-          shadowOpacity: 0.40, // Intensidade da "luz"
+          shadowOpacity: 0.4, // Intensidade da "luz"
           shadowRadius: 15, // O quão difusa a luz será (blur)
           elevation: 15, // A elevação faz o Android criar e renderizar a sombra
         },
@@ -71,7 +72,7 @@ export default function TabsLayout() {
         options={{
           title: "Profile",
           tabBarIcon: ({ color }) => (
-            <SimpleLineIcons name="user" size={20} color={color}  />
+            <SimpleLineIcons name="user" size={20} color={color} />
           ),
         }}
       />
