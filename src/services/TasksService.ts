@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { Alert } from "react-native";
 import { supabase } from "../lib/supabase";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export interface Task {
   id: string;
@@ -93,6 +94,32 @@ export function useTasks() {
         (task) => selectedFilter === "all" || task.priority === selectedFilter,
       );
   }, [tasks, optimisticStatuses, selectedFilter]);
+
+  // Sincroniza tarefas pendentes que têm localização com o AsyncStorage para uso em segundo plano
+  useEffect(() => {
+    if (loading) return;
+
+    const cacheTasks = async () => {
+      try {
+        const activeTasksWithLoc = filteredTasks.filter(
+          (t) =>
+            t.status !== "concluida" &&
+            t.latitude !== undefined &&
+            t.latitude !== null &&
+            t.longitude !== undefined &&
+            t.longitude !== null,
+        );
+        await AsyncStorage.setItem(
+          "@cached_tasks_with_location",
+          JSON.stringify(activeTasksWithLoc),
+        );
+      } catch (err) {
+        console.error("Erro ao salvar cache de tarefas:", err);
+      }
+    };
+
+    cacheTasks();
+  }, [filteredTasks, loading]);
 
   return {
     tasks,

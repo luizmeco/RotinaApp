@@ -16,7 +16,10 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "Permissão para acessar sua localização e mostrar no mapa."
+        "NSLocationWhenInUseUsageDescription": "Permissão para acessar sua localização e mostrar no mapa.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Permissão para acessar sua localização em segundo plano para enviar alertas de tarefas próximas.",
+        "NSLocationAlwaysUsageDescription": "Permissão para acessar sua localização em segundo plano para enviar alertas de tarefas próximas.",
+        "UIBackgroundModes": ["location"]
       }
     },
     "android": {
@@ -27,7 +30,11 @@
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "package": "com.anonymous.rotinaapp",
-      "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"]
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -40,7 +47,9 @@
       [
         "expo-location",
         {
-          "locationWhenInUsePermission": "Permissão para acessar sua localização e mostrar no mapa."
+          "locationWhenInUsePermission": "Permissão para acessar sua localização e mostrar no mapa.",
+          "locationAlwaysPermission": "Permissão para acessar sua localização em segundo plano para enviar alertas de tarefas próximas.",
+          "isAndroidBackgroundLocationEnabled": true
         }
       ]
     ]
