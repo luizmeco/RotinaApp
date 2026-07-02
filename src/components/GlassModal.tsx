@@ -39,10 +39,7 @@ export default function GlassModal({
       transparent={true}
       onRequestClose={onClose}
     >
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        className="flex-1 justify-end"
-      >
+      <View className="flex-1 justify-end">
         {/* Blur de fundo cobrindo a tela inteira (dentro do Modal) */}
         <Animated.View style={[StyleSheet.absoluteFill, { opacity: fadeAnim }]}>
           <BlurView
@@ -57,7 +54,11 @@ export default function GlassModal({
         <Pressable style={StyleSheet.absoluteFill} onPress={onClose} />
 
         {/* Container do Bottom Sheet */}
-        <View className="bg-glass-modal pb-10 pt-4 px-6 rounded-t-[32px] border border-glass-border shadow-modal">
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : undefined}
+          keyboardVerticalOffset={Platform.OS === "ios" ? 20 : 0}
+          className="bg-glass-modal pb-10 pt-4 px-6 rounded-t-[32px] border border-glass-border shadow-modal"
+        >
           {/* Tracinho de arrastar estilo iOS */}
           <View className="items-center mb-6">
             <View className="w-12 h-1.5 bg-outline-variant rounded-full" />
@@ -65,8 +66,8 @@ export default function GlassModal({
 
           {/* Conteúdo do Modal */}
           {children}
-        </View>
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+      </View>
     </Modal>
   );
 }

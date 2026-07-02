@@ -19,6 +19,7 @@ export function useTasks() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedFilter, setSelectedFilter] = useState<FilterOption>("all");
+  const [isOffline, setIsOffline] = useState(false);
 
   // Estado local para armazenar o status otimista (Optimistic UI)
   const [optimisticStatuses, setOptimisticStatuses] = useState<
@@ -32,6 +33,7 @@ export function useTasks() {
   const fetchTasks = async () => {
     try {
       setLoading(true);
+      setIsOffline(false);
       // 1. Recuperar o usuário atualmente logado
       const {
         data: { user },
@@ -50,9 +52,46 @@ export function useTasks() {
 
       if (error) throw error;
 
-      setTasks(data || []);
+      const tasksData = data || [];
+      setTasks(tasksData);
+
+      // Salva no AsyncStorage para cache offline completo
+      await AsyncStorage.setItem(
+        "@cached_all_tasks",
+        JSON.stringify(tasksData),
+      );
     } catch (error: any) {
-      Alert.alert("Erro ao buscar tarefas", error.message);
+      console.warn(
+        "[TasksService] Erro ao buscar tarefas do servidor. Tentando carregar cache offline...",
+        error.message,
+      );
+
+      const isNetworkError =
+        error.message?.toLowerCase().includes("fetch") ||
+        error.message?.toLowerCase().includes("network") ||
+        error.message?.toLowerCase().includes("failed to fetch") ||
+        error.message?.toLowerCase().includes("typeerror");
+
+      if (isNetworkError) {
+        setIsOffline(true);
+      }
+
+      try {
+        const cached = await AsyncStorage.getItem("@cached_all_tasks");
+        if (cached) {
+          setTasks(JSON.parse(cached));
+        }
+      } catch (cacheErr) {
+        console.error(
+          "[TasksService] Erro ao carregar cache de tarefas:",
+          cacheErr,
+        );
+      }
+
+      // Só exibe o popup invasivo se não for um erro de rede/conexão esperado
+      if (!isNetworkError) {
+        Alert.alert("Erro ao buscar tarefas", error.message);
+      }
     } finally {
       setLoading(false);
     }
@@ -129,5 +168,6 @@ export function useTasks() {
     selectedFilter,
     setSelectedFilter,
     handleToggleTask,
+    isOffline,
   };
 }
